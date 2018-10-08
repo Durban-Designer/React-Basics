@@ -12,9 +12,9 @@ class App extends Component {
       userId: '',
       error: false
     }
+    this.formSubmit = this.formSubmit.bind(this);
     this.updateEmail = this.updateEmail.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
-    this.formSubmit = this.formSubmit.bind(this);
   }
   formSubmit (evt) {
     evt.preventDefault()
