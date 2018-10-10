@@ -11,6 +11,20 @@ const mapDispatchToProps = dispatch => ({
   storeCredentials: (token, userId) => dispatch(storeCredentials(token, userId))
 })
 
+function EditModal () {
+  return (
+    <div className="EditModal">
+      <form onSubmit={this.updateUser}>
+        <input value={this.state.email} onChange={this.updateEmail} placeholder="email@example.com"/>
+        <input value={this.state.password} onChange={this.updatePassword} placeholder="**********"/>
+        <input value={this.state.name} onChange={this.updateName} placeholder="User St. John"/>
+        {errorUpdateModal}
+        <input type="submit" value="Confirm Edit" />
+      </form>
+    </div>
+  );
+}
+
 class Login extends Component {
   constructor (props) {
     super(props);
@@ -47,18 +61,32 @@ class Login extends Component {
     this.setState({password: event.target.value});
   }
   render () {
-    let errorModal
+    var modal
+    var errorUpdateModal
+    if (this.state.view === 'edit') {
+      modal = <EditModal />
+    } else {
+      modal = function () {
+        return (
+          <div className="ViewModal">
+            <h2>Account</h2>
+            <h4>{this.state.email}</h4>
+            <h4>{this.state.name}</h4>
+          </div>
+        );
+      }
+    }
     if (this.state.error) {
-      errorModal =  <h4 className="errorMessage">Username / Password combination Incorrect</h4>
+      errorUpdateModal =  <h4 className="errorMessage">Unable to Update User object</h4>
     }
     return (
       <div className="main">
-        <form onSubmit={this.formSubmit}>
-          <input value={this.state.email} onChange={this.updateEmail} placeholder="email@example.com"/>
-          <input value={this.state.password} onChange={this.updatePassword} placeholder="**********"/>
-          {errorModal}
-          <input type="submit" value="Login" />
-        </form>
+        {modal}
+        <pre>
+         {
+          JSON.stringify(this.props)
+         }
+        </pre>
       </div>
     );
   }
